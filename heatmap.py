@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
 import seaborn as sns
 
 data = pd.read_csv("Airbnb_data.csv")
@@ -29,14 +28,12 @@ for column in data.columns:
     else:
         numerical_col.append(column)
 
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder  # this part will be changed because using this library is illegal
 le = LabelEncoder()
 
 for col in categorical_col:
-    data[col] = le.fit_transform(data[col])
+    data[col] = le.fit_transform(data[col])     #upto there other parts can(and will) be modified but legal
     
-pd.set_option("display.max_columns",None)
-data
 
 plt.figure(figsize = (40,40))
 sns.heatmap(data.corr(), annot=True, fmt=".2f", cmap="seismic")
