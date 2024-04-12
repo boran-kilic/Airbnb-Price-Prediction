@@ -98,15 +98,16 @@ print('\ncity')
 print(new_data['city'].value_counts())
 print('\nwe need to deal with these')
         
-# Convert the DataFrame to a CSV file
-# new_data.to_csv('proccessed_airbnb_data.csv', index=False)
 
-# from sklearn.preprocessing import LabelEncoder  # this part will be changed because using this library is illegal
-# le = LabelEncoder()
 
-# for col in categorical_col:
-#     new_data[col] = le.fit_transform(new_data[col])     #upto there other parts can(and will) be modified but legal
+from sklearn.preprocessing import LabelEncoder  # this part will be changed because using this library is illegal
+le = LabelEncoder()
+
+for col in categorical_col:
+    new_data[col] = le.fit_transform(new_data[col])     #upto there other parts can(and will) be modified but legal
     
+# Convert the DataFrame to a CSV file
+new_data.to_csv('proccessed_airbnb_data.csv', index=False)
 
 # plt.figure(figsize = (30,30))
 # sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
