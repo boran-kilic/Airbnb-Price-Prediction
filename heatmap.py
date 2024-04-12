@@ -3,27 +3,29 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-data = pd.read_csv("Airbnb_data.csv")
+#data = pd.read_csv("Airbnb_Data.csv")
+data = pd.read_csv(r"C:\Users\User\DUNYANIN EN IYI PROJESI\Airbnb-Price-Prediction\Airbnb_Data.csv")
+new_data = data.drop(["description","name","thumbnail_url",], axis='columns')
         
-data.last_review.fillna(method="ffill",inplace=True)
-data.first_review.fillna(method="ffill",inplace=True)
-data.host_since.fillna(method="ffill",inplace=True)
-data["bathrooms"] = data['bathrooms'].fillna(round(data["bathrooms"].median()))
-data["review_scores_rating"] = data["review_scores_rating"].fillna(0)
-data["bedrooms"] = data['bedrooms'].fillna((data["bathrooms"].median()))
-data["beds"] = data["beds"].fillna((data["bathrooms"].median()))
+new_data.last_review.fillna(method="ffill",inplace=True)
+new_data.first_review.fillna(method="ffill",inplace=True)
+new_data.host_since.fillna(method="ffill",inplace=True)
+new_data["bathrooms"] = new_data['bathrooms'].fillna(round(new_data["bathrooms"].median()))
+new_data["review_scores_rating"] = new_data["review_scores_rating"].fillna(0)
+new_data["bedrooms"] = new_data['bedrooms'].fillna((new_data["bathrooms"].median()))
+new_data["beds"] = new_data["beds"].fillna((new_data["bathrooms"].median()))
 
 amenities_count = []
-for i in data["amenities"]:
+for i in new_data["amenities"]:
     amenities_count.append(len(i))
     
-data["amenities"] = amenities_count
+new_data["amenities"] = amenities_count
 
 categorical_col = []
 numerical_col = []
-for column in data.columns:
+for column in new_data.columns:
     
-    if data[column].dtypes != "float64" and data[column].dtypes != "int64":
+    if new_data[column].dtypes != "float64" and new_data[column].dtypes != "int64":
         categorical_col.append(column)
     else:
         numerical_col.append(column)
@@ -32,9 +34,12 @@ from sklearn.preprocessing import LabelEncoder  # this part will be changed beca
 le = LabelEncoder()
 
 for col in categorical_col:
-    data[col] = le.fit_transform(data[col])     #upto there other parts can(and will) be modified but legal
+    new_data[col] = le.fit_transform(new_data[col])     #upto there other parts can(and will) be modified but legal
     
 
 plt.figure(figsize = (40,40))
-sns.heatmap(data.corr(), annot=True, fmt=".2f", cmap="seismic")
+sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
 plt.show()
+
+print(new_data.columns)
+
