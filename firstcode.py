@@ -8,5 +8,5 @@ data = pd.read_csv(r"C:\Users\User\DUNYANIN EN IYI PROJESI\Airbnb-Price-Predicti
 #data = pd.read_csv("Airbnb_Data.csv")
 #print(data.head)
 #data.head()
-new_data = data.drop(["description","name","thumbnail_url","zipcode","latitude"], axis='columns',inplace=True)
+new_data = data.drop(["description","name","thumbnail_url","zipcode","latitude","longitude","neighbourhood"], axis='columns')
 print(new_data)
