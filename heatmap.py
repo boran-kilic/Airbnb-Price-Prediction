@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-data = pd.read_csv("Airbnb_Data.csv")
-#data = pd.read_csv(r"C:\Users\User\DUNYANIN EN IYI PROJESI\Airbnb-Price-Prediction\Airbnb_Data.csv")
+#data = pd.read_csv("Airbnb_Data.csv")
+data = pd.read_csv(r"C:\Users\User\DUNYANIN EN IYI PROJESI\Airbnb-Price-Prediction\Airbnb_Data.csv")
 new_data = data.drop(["description","name","thumbnail_url","zipcode","latitude","longitude","neighbourhood"], axis='columns')
         
 new_data.last_review.fillna(method="ffill",inplace=True)
@@ -43,3 +43,6 @@ plt.show()
 
 print(new_data.columns)
 
+plt.figure()
+plt.title("Color")
+plt.hist(new_data.)
