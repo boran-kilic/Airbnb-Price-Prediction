@@ -41,5 +41,5 @@ plt.figure(figsize = (40,40))
 sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
 plt.show()
 
-#print(new_data.columns)
+print(new_data.columns)
 
