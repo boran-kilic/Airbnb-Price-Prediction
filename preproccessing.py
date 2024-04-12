@@ -94,10 +94,25 @@ print('\nproperty_type')
 print(new_data['property_type'].value_counts())
 print('\nbed_type')
 print(new_data['bed_type'].value_counts())
+a= new_data['city'].value_counts()
+city_counts = a.to_dict()
+a1 = pd.Series(a , index = new_data['city'])
 print('\ncity')
 print(new_data['city'].value_counts())
 print('\nwe need to deal with these')
         
+def get_numerical_col(categorical_col):
+    for i in range(len(categorical_col)):
+        my_series=new_data[categorical_col[i]].value_counts()
+        my_dictionary=my_series.to_dict()
+        sortedDict = sorted(my_dictionary)
+        for j in len(sortedDict):
+            string= sortedDict[j]
+            new_data[categorical_col[i]] = new_data[categorical_col[i]].replace({string : j})
+return   
+
+       
+  
 
 
 from sklearn.preprocessing import LabelEncoder  # this part will be changed because using this library is illegal
