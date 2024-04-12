@@ -43,6 +43,6 @@ plt.show()
 
 print(new_data.columns)
 
-plt.figure()
-plt.title("Color")
-plt.hist(new_data.)
+# plt.figure()
+# plt.title("Color")
+# plt.hist(new_data.)
