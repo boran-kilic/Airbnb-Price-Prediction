@@ -3,17 +3,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def make_numerical_col(new_data,columnname):
-    my_series = new_data.groupby(columnname)['log_price'].mean()
-    my_dictionary = my_series.to_dict()
-    keys = list(my_dictionary.keys())
-    values = list(my_dictionary.values())
-    sorted_value_index = np.argsort(values)
-    sorted_dict = {keys[sorted_value_index[i]]: i for i in sorted_value_index}
-    for key in sorted_dict:
-        new_data[columnname] = new_data[columnname].replace({key : sorted_dict[key]})
-    return new_data   
+# def make_numerical_col(new_data,columnname):
+#     my_series = new_data.groupby(columnname)['log_price'].mean()
+#     my_dictionary = my_series.to_dict()
+#     keys = list(my_dictionary.keys())
+#     values = list(my_dictionary.values())
+#     sorted_value_index = np.argsort(values)
+#     sorted_dict = {keys[sorted_value_index[i]]: i for i in sorted_value_index}
+#     for key in sorted_dict:
+#         new_data[columnname] = new_data[columnname].replace({key : sorted_dict[key]})
+#     return new_data   
 
+def make_numerical_col(new_data, columnname):
+    mean_prices = new_data.groupby(columnname)['log_price'].mean()
+    sorted_categories = mean_prices.sort_values().index.tolist()
+    category_to_integer = {category: i for i, category in enumerate(sorted_categories)}
+    new_data[columnname] = new_data[columnname].map(category_to_integer)    
+    return new_data
 data = pd.read_csv("Airbnb_Data.csv")
 # data = pd.read_csv(r"C:\Users\User\DUNYANIN EN IYI PROJESI\Airbnb-Price-Prediction\Airbnb_Data.csv")
 
@@ -42,15 +48,9 @@ new_data = make_numerical_col(new_data,'city')
 new_data = make_numerical_col(new_data,'property_type')
 new_data = make_numerical_col(new_data,'bed_type')
 #########################################################################NaN values filled        
-# Assuming 'data' is your DataFrame
+
 new_data = new_data[new_data['log_price'] != 0]
 
-# This will update the DataFrame 'data' to only include rows where log_price is not equal to 0
-
-
-#new_data.last_review.fillna(method="ffill",inplace=True)
-#new_data.first_review.fillna(method="ffill",inplace=True)
-#new_data.host_since.fillna(method="ffill",inplace=True)
 
 # a = 0
 # for i in range(74111):
@@ -58,7 +58,6 @@ new_data = new_data[new_data['log_price'] != 0]
 #        a = a + 1
 # print(a)
 # # a = 73697 # number of hosts having a profile pic
-# # 74111 - a = 414
 new_data["host_has_profile_pic"] = new_data['host_has_profile_pic'].fillna(1)
 
 
@@ -69,7 +68,7 @@ new_data["host_has_profile_pic"] = new_data['host_has_profile_pic'].fillna(1)
 # print(b)
 
 # b = 49748 #number of hosts that identified themselves
-# 74111-b = 24363
+
 new_data["host_identity_verified"] = new_data['host_identity_verified'].fillna(1)
 new_data["bathrooms"] = new_data['bathrooms'].fillna(round(new_data["bathrooms"].mean()))
 new_data["review_scores_rating"] = new_data["review_scores_rating"].fillna(0)
@@ -83,8 +82,6 @@ for i in new_data["amenities"]:
     amenities_count.append(len(i.split(',')))
     
 new_data["amenities"] = amenities_count
-
-
 
 
 # number_of_nans_per_column = new_data.isna().sum()
@@ -111,14 +108,6 @@ print(new_data['bed_type'].value_counts())
 
 print('\ncity')
 print(new_data['city'].value_counts())
-print('\nwe need to deal with these')
-        
-
-
-
-       
-  
-
 
 # from sklearn.preprocessing import LabelEncoder  # this part will be changed because using this library is illegal
 # le = LabelEncoder()
