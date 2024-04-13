@@ -1,12 +1,14 @@
 import pandas as pd
 import numpy as np
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 # Read the CSV file
 data = pd.read_csv('proccessed_airbnb_data.csv')
 
 # Prepare the data
 x = data.drop(["log_price"],axis = 1)
 y = data['log_price'].astype(float).values
+
 
 #######ofc we gonna change them all
 

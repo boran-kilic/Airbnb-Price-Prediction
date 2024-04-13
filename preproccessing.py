@@ -24,15 +24,25 @@ data = pd.read_csv("Airbnb_Data.csv")
 # data = pd.read_csv(r"C:\Users\User\DUNYANIN EN IYI PROJESI\Airbnb-Price-Prediction\Airbnb_Data.csv")
 
 ########################################################non-usable columns dropped
-new_data = data.drop(["id","description","name","thumbnail_url","zipcode",
-                      "latitude","longitude","neighbourhood","first_review",
-                      "host_since","last_review"], axis='columns')
+new_data = data.drop(["id","description","name","thumbnail_url",
+                      "neighbourhood",], axis='columns')
 
 # number_of_nans_per_column = new_data.isna().sum()
 # print("\nBefore\n")
 # print(number_of_nans_per_column)
 
 ############################################ some non numerical values converted to numerical
+today = pd.to_datetime('today')
+new_data['host_since'] = pd.to_datetime(new_data['host_since'])
+new_data['host_since'] = (today - new_data['host_since']).dt.days
+
+new_data['first_review'] = pd.to_datetime(new_data['first_review'])
+new_data['first_review'] = (today - new_data['first_review']).dt.days
+
+new_data['last_review'] = pd.to_datetime(new_data['last_review'])
+new_data['last_review'] = (today - new_data['last_review']).dt.days
+
+
 
 new_data['cleaning_fee'] = new_data['cleaning_fee'].replace({True: 1, False: 0})        
 new_data['instant_bookable'] = new_data['instant_bookable'].replace({'t': 1, 'f': 0})
@@ -69,12 +79,18 @@ new_data["host_has_profile_pic"] = new_data['host_has_profile_pic'].fillna(1)
 
 # b = 49748 #number of hosts that identified themselves
 
-new_data["host_identity_verified"] = new_data['host_identity_verified'].fillna(1)
-new_data["bathrooms"] = new_data['bathrooms'].fillna(round(new_data["bathrooms"].mean()))
-new_data["review_scores_rating"] = new_data["review_scores_rating"].fillna(0)
-new_data["host_response_rate"] = new_data["host_response_rate"].fillna((new_data["host_response_rate"].mean()))
-new_data["bedrooms"] = new_data['bedrooms'].fillna(round(new_data["bedrooms"].mean()))
-new_data["beds"] = new_data["beds"].fillna(round(new_data["beds"].mean()))
+new_data["zipcode"] = pd.to_numeric(new_data["zipcode"], errors='coerce').fillna(0)
+new_data["zipcode"] = new_data["zipcode"].astype(float)
+
+new_data.host_since.fillna(method="ffill",inplace=True)
+new_data.last_review.fillna(method="ffill",inplace=True)
+new_data.first_review.fillna(method="ffill",inplace=True)
+new_data['host_identity_verified'].fillna(1,inplace=True)
+new_data['bathrooms'].fillna(round(new_data["bathrooms"].mean()),inplace=True)
+new_data["review_scores_rating"].fillna(0,inplace=True)
+new_data["host_response_rate"].fillna((new_data["host_response_rate"].mean()),inplace=True)
+new_data['bedrooms'].fillna(round(new_data["bedrooms"].mean()),inplace=True)
+new_data["beds"].fillna(round(new_data["beds"].mean()),inplace=True)
 
 ###new feature defined
 amenities_count = []
@@ -90,37 +106,38 @@ new_data["amenities"] = amenities_count
 
 
 ###categorical and numarical colums are identified
-categorical_col = []
-numerical_col = []
-for column in new_data.columns:
+# categorical_col = []
+# numerical_col = []
+# for column in new_data.columns:
     
-    if new_data[column].dtypes != "float64" and new_data[column].dtypes != "int64":
-        categorical_col.append(column)
-    else:
-        numerical_col.append(column)
-print('\n')
-print(len(categorical_col))
-print(categorical_col)
-print('\nproperty_type')
-print(new_data['property_type'].value_counts())
-print('\nbed_type')
-print(new_data['bed_type'].value_counts())
+#     if new_data[column].dtypes != "float64" and new_data[column].dtypes != "int64":
+#         categorical_col.append(column)
+#     else:
+#         numerical_col.append(column)
+# print('\n')
+# print(len(categorical_col))
+# print(categorical_col)
+# print('\nproperty_type')
+# print(new_data['property_type'].value_counts())
+# print('\nbed_type')
+# print(new_data['bed_type'].value_counts())
 
-print('\ncity')
-print(new_data['city'].value_counts())
+# print('\ncity')
+# print(new_data['city'].value_counts())
 
-# from sklearn.preprocessing import LabelEncoder  # this part will be changed because using this library is illegal
-# le = LabelEncoder()
-
-# for col in categorical_col:
-#     new_data[col] = le.fit_transform(new_data[col])     #upto there other parts can(and will) be modified but legal
     
-# Convert the DataFrame to a CSV file
-new_data.to_csv('proccessed_airbnb_data.csv', index=False)
-
-plt.figure(figsize = (30,30))
+plt.figure(figsize = (40,40))
 sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
 plt.show()
+
+new_data = new_data.drop(['first_review', 'host_has_profile_pic', 'host_identity_verified',
+       'host_response_rate', 'host_since', 'instant_bookable', 'last_review',
+       'latitude', 'longitude', 'number_of_reviews',"zipcode", 'review_scores_rating'],axis = 1)
+plt.figure(figsize = (20,10))
+sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
+plt.show()
+
+new_data.to_csv('proccessed_airbnb_data.csv', index=False)
 
 # print(new_data.columns)
 
