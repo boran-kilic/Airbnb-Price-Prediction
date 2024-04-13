@@ -3,6 +3,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+def make_numerical_col(new_data,columnname):
+    my_series = new_data.groupby(columnname)['log_price'].mean()
+    my_dictionary = my_series.to_dict()
+    keys = list(my_dictionary.keys())
+    values = list(my_dictionary.values())
+    sorted_value_index = np.argsort(values)
+    sorted_dict = {keys[sorted_value_index[i]]: i for i in sorted_value_index}
+    for key in sorted_dict:
+        new_data[columnname] = new_data[columnname].replace({key : sorted_dict[key]})
+    return new_data   
+
 data = pd.read_csv("Airbnb_Data.csv")
 # data = pd.read_csv(r"C:\Users\User\DUNYANIN EN IYI PROJESI\Airbnb-Price-Prediction\Airbnb_Data.csv")
 
@@ -27,6 +38,9 @@ new_data['host_response_rate'] = new_data['host_response_rate'].str.replace('%',
 
 new_data['room_type'] = new_data['room_type'].replace({'Entire home/apt': 2, 'Private room': 1,'Shared room': 0})
 
+new_data = make_numerical_col(new_data,'city')
+new_data = make_numerical_col(new_data,'property_type')
+new_data = make_numerical_col(new_data,'bed_type')
 #########################################################################NaN values filled        
 # Assuming 'data' is your DataFrame
 new_data = new_data[new_data['log_price'] != 0]
@@ -94,39 +108,30 @@ print('\nproperty_type')
 print(new_data['property_type'].value_counts())
 print('\nbed_type')
 print(new_data['bed_type'].value_counts())
-a= new_data['city'].value_counts()
-city_counts = a.to_dict()
-a1 = pd.Series(a , index = new_data['city'])
+
 print('\ncity')
 print(new_data['city'].value_counts())
 print('\nwe need to deal with these')
         
-def get_numerical_col(categorical_col):
-    for i in range(len(categorical_col)):
-        my_series=new_data[categorical_col[i]].value_counts()
-        my_dictionary=my_series.to_dict()
-        sortedDict = sorted(my_dictionary)
-        for j in len(sortedDict):
-            string= sortedDict[j]
-            new_data[categorical_col[i]] = new_data[categorical_col[i]].replace({string : j})
-return   
+
+
 
        
   
 
 
-from sklearn.preprocessing import LabelEncoder  # this part will be changed because using this library is illegal
-le = LabelEncoder()
+# from sklearn.preprocessing import LabelEncoder  # this part will be changed because using this library is illegal
+# le = LabelEncoder()
 
-for col in categorical_col:
-    new_data[col] = le.fit_transform(new_data[col])     #upto there other parts can(and will) be modified but legal
+# for col in categorical_col:
+#     new_data[col] = le.fit_transform(new_data[col])     #upto there other parts can(and will) be modified but legal
     
 # Convert the DataFrame to a CSV file
 new_data.to_csv('proccessed_airbnb_data.csv', index=False)
 
-# plt.figure(figsize = (30,30))
-# sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
-# plt.show()
+plt.figure(figsize = (30,30))
+sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
+plt.show()
 
 # print(new_data.columns)
 
