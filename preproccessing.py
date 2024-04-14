@@ -3,8 +3,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-data = pd.read_csv("Airbnb_Data.csv")
+def make_numerical_col(new_data, columnname):
+    mean_prices = new_data.groupby(columnname)['log_price'].mean()
+    sorted_categories = mean_prices.sort_values().index.tolist()
+    category_to_integer = {category: i for i, category in enumerate(sorted_categories)}
+    new_data[columnname] = new_data[columnname].map(category_to_integer)    
+    return new_data
 
+
+data = pd.read_csv("Airbnb_Data.csv")
 categorical_col = []
 numerical_col = []
 for column in data.columns:
@@ -19,25 +26,8 @@ print(len(numerical_col))
 
 
 number_of_nans_per_column = data.isna().sum()
-print("\nAfter\n" )
+
 print(number_of_nans_per_column)
-
- 
-
-def make_numerical_col(new_data, columnname):
-    mean_prices = new_data.groupby(columnname)['log_price'].mean()
-    sorted_categories = mean_prices.sort_values().index.tolist()
-    category_to_integer = {category: i for i, category in enumerate(sorted_categories)}
-    new_data[columnname] = new_data[columnname].map(category_to_integer)    
-    return new_data
-
-
-def cost_function(columnname, estimated_log_price, weight, bias):
-    total_error = 0.0
-    for i in range(len(columnname)):
-        total_error += (estimated_log_price[i] - (weight*columnname[i] + bias))**2
-    return total_error / len(columnname)
-
 
 
 # data = pd.read_csv(r"C:\Users\User\DUNYANIN EN IYI PROJESI\Airbnb-Price-Prediction\Airbnb_Data.csv")
@@ -45,10 +35,10 @@ def cost_function(columnname, estimated_log_price, weight, bias):
 ########################################################non-usable columns dropped
 new_data = data.drop(["id","description","name","thumbnail_url",
                       "neighbourhood","zipcode",'first_review','host_response_rate','last_review'
-                      ,'review_scores_rating','host_since','latitude', 'longitude',], axis='columns')
+                      ,'review_scores_rating','host_since','latitude', 'longitude'], axis='columns')
 
 # new_data = new_data.drop(['host_has_profile_pic', 'host_identity_verified',  'instant_bookable', 
-#         'number_of_reviews', ],axis = 1)
+#                             'number_of_reviews', ],axis = 1)
 
 # number_of_nans_per_column = new_data.isna().sum()
 # print("\nBefore\n")
@@ -128,9 +118,10 @@ sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
 plt.show()
 
 
-plt.figure(figsize = (20,10))
-sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
-plt.show()
+
+# plt.figure(figsize = (20,10))
+# sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
+# plt.show()
 
 new_data.to_csv('proccessed_airbnb_data.csv', index=False)
 
