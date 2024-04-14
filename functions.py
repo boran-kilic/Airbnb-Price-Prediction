@@ -18,15 +18,14 @@ def mean_squared_error (y_test, y_pred_lr):
     return MSE
 
 def mean_absolute_error (y_test, y_pred_lr):
-    RSS = 0
+    total = 0
     for i in range(len(y_test)):
-        RSS = RSS + abs(y_test[i]-y_pred_lr[i])
-    MSE = RSS/len(y_test)
+        total = total + abs(y_test[i]-y_pred_lr[i])
+    MSE = total/len(y_test)
     return MSE
 
-def train_test_split(x,y):
-    
-    np.random.seed(42)  
+def train_test_split(x,y, seed):
+    np.random.seed(seed)  
     test_size = int(len(x) * 0.2)  
     
     x = x.to_numpy()

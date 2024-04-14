@@ -111,15 +111,15 @@ new_data["amenities"] = amenities_count
 
 
     
-plt.figure(figsize = (40,40))
-sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
-plt.show()
-
-
-
-# plt.figure(figsize = (20,10))
+# plt.figure(figsize = (40,40))
 # sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
 # plt.show()
+
+
+
+plt.figure(figsize = (20,10))
+sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
+plt.show()
 
 new_data.to_csv('proccessed_airbnb_data.csv', index=False)
 
