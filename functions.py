@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-
 def cost_function(columnname, estimated_log_price, weight, bias):
     total_error = 0.0
     for i in range(len(columnname)):
