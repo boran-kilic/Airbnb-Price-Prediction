@@ -24,9 +24,9 @@ def mean_absolute_error (y_test, y_pred_lr):
     MSE = total/len(y_test)
     return MSE
 
-def train_test_split(x,y, seed):
+def train_test_split(x,y, seed, test_size):
     np.random.seed(seed)  
-    test_size = int(len(x) * 0.2)  
+    test_size = int(len(x) * test_size)  
     
     x = x.to_numpy()
     y = y
@@ -34,11 +34,16 @@ def train_test_split(x,y, seed):
     indices = np.arange(len(x))
     np.random.shuffle(indices)
     
-    x_shuffled = x[indices]
-    y_shuffled = y[indices]
+    x_shffl = x[indices]
+    y_shffl = y[indices]
     
-    x_train = x_shuffled[test_size:]
-    x_test = x_shuffled[:test_size]
-    y_train = y_shuffled[test_size:]
-    y_test = y_shuffled[:test_size]
+    x_train = x_shffl[test_size:]
+    x_test = x_shffl[:test_size]
+    y_train = y_shffl[test_size:]
+    y_test = y_shffl[:test_size]
     return x_train, x_test, y_train, y_test
+
+
+
+
+
