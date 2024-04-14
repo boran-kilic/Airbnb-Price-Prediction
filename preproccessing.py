@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -9,7 +8,6 @@ def make_numerical_col(new_data, columnname):
     category_to_integer = {category: i for i, category in enumerate(sorted_categories)}
     new_data[columnname] = new_data[columnname].map(category_to_integer)    
     return new_data
-
 
 data = pd.read_csv("Airbnb_Data.csv")
 categorical_col = []
