@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def make_numerical_col(new_data, columnname):
+def weighted_target_encoding(new_data, columnname):
     mean_prices = new_data.groupby(columnname)['log_price'].mean()
     sorted_categories = mean_prices.sort_values().index.tolist()
     category_to_integer = {category: i for i, category in enumerate(sorted_categories)}
@@ -66,9 +66,9 @@ new_data['cancellation_policy'] = new_data['cancellation_policy'].replace({'stri
 
 new_data['room_type'] = new_data['room_type'].replace({'Entire home/apt': 2, 'Private room': 1,'Shared room': 0})
 
-new_data = make_numerical_col(new_data,'city')
-new_data = make_numerical_col(new_data,'property_type')
-new_data = make_numerical_col(new_data,'bed_type')
+new_data = weighted_target_encoding(new_data,'city')
+new_data = weighted_target_encoding(new_data,'property_type')
+new_data = weighted_target_encoding(new_data,'bed_type')
 #########################################################################NaN values filled        
 
 new_data = new_data[new_data['log_price'] != 0]
