@@ -17,6 +17,12 @@ def mean_squared_error (y_test, y_pred_lr):
     MSE = RSS/len(y_test)
     return MSE
 
+def RSS (y_test, y_pred_lr):
+    RSS = 0
+    for i in range(len(y_test)):
+        RSS = RSS + (y_test[i]-y_pred_lr[i])**2
+    return RSS
+
 def mean_absolute_error (y_test, y_pred_lr):
     total = 0
     for i in range(len(y_test)):
