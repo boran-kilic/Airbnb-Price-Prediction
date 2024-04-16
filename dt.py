@@ -44,3 +44,15 @@ print("The Score: ", (RSS(test_Y_predicted, test_Y)))
 plt.figure()
 plt.plot(test_Y, label="line1")
 plt.plot(test_Y_predicted, label="line2")
+
+from sklearn import metrics
+mae = metrics.mean_absolute_error(test_Y, test_Y_predicted)
+mse = metrics.mean_squared_error(test_Y, test_Y_predicted)
+rmse_lr = np.sqrt(metrics.mean_squared_error(test_Y, test_Y_predicted))
+r2_lr = metrics.r2_score(test_Y, test_Y_predicted)
+
+
+print('\nMean Absolute Error of Linear Regression   : ', mae)
+print('\nMean Squarred Error of Linear Regression     : ', mse)
+print('\nRoot Mean Squarred Error of Linear Regression: ', rmse_lr)
+print('\nR2 Score of Linear Regression                : ', r2_lr)
