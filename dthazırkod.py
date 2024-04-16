@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 data = pd.read_csv("proccessed_airbnb_data.csv")
-data = data[:100]
+#data = data[:100]
 class Node():
     def __init__(self, feature_index=None, threshold=None, left=None, right=None, var_red=None, value=None):
         ''' constructor ''' 
@@ -18,7 +18,7 @@ class Node():
         self.value = value
 
 class DecisionTreeRegressor():
-    def __init__(self, min_samples_split=5, max_depth=2):
+    def __init__(self, min_samples_split, max_depth):
         ''' constructor '''
         
         # initialize the root of the tree 
@@ -93,7 +93,6 @@ class DecisionTreeRegressor():
     
     def variance_reduction(self, parent, l_child, r_child):
         ''' function to compute variance reduction '''
-        
         weight_l = len(l_child) / len(parent)
         weight_r = len(r_child) / len(parent)
         reduction = np.var(parent) - (weight_l * np.var(l_child) + weight_r * np.var(r_child))
@@ -175,14 +174,15 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=.2, random_s
 
 # X_train, X_test, Y_train, Y_test = train_test_split(X,Y,seed = 42, test_size = 0.2)
 
-regressor = DecisionTreeRegressor(min_samples_split=2, max_depth=10)
+regressor = DecisionTreeRegressor(min_samples_split=7000, max_depth=10)
 regressor.fit(X_train,Y_train)
 regressor.print_tree()
 
+
+# Assuming 'regressor' is your trained DecisionTreeRegressor
 from sklearn.tree import plot_tree
 import matplotlib.pyplot as plt
 
-# Assuming 'regressor' is your trained DecisionTreeRegressor
 plt.figure(figsize=(20,10))
 plot_tree(regressor, filled=True)
 plt.show()

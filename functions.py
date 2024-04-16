@@ -17,11 +17,7 @@ def mean_squared_error (y_test, y_pred_lr):
     MSE = RSS/len(y_test)
     return MSE
 
-def RSS (y_test, y_pred_lr):
-    RSS = 0
-    for i in range(len(y_test)):
-        RSS = RSS + (y_test[i]-y_pred_lr[i])**2
-    return RSS
+
 
 def mean_absolute_error (y_test, y_pred_lr):
     total = 0
@@ -50,6 +46,32 @@ def train_test_split(x,y, seed, test_size):
     return x_train, x_test, y_train, y_test
 
 
+class Regression_Tree():
+    def __init__(self):
+        
+        
+        
+      return   
+    
+    def RSS (y_test, y_pred_lr):
+        RSS = 0
+        for i in range(len(y_test)):
+            RSS = RSS + (y_test[i]-y_pred_lr[i])**2
+        return RSS
+        
+    def split_to_two(columnname):
+        sep_col= new_data[columnname]
+        sep_price= mean_prices = new_data.groupby(columnname)['log_price']
+        
+        
+        return
+    def treshold_find(columnname):
+        treshold=
+        
+        
+        return
+        
 
+    
 
 

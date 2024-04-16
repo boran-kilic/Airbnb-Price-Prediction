@@ -110,9 +110,10 @@ def predict_all(test_features, tree_rules):
 def score_r2(y_predicted, y_label): 
     numerator = np.sum(np.square(y_label - y_predicted)) 
     denominator = np.sum(np.square(y_predicted - np.mean(y_label))) 
-    return (1 - numerator / denominator) 
+    R2= 1 - numerator / denominator
+    return R2 
 
-train_features, train_labels, validation_features, validation_labels, test_features, test_labels = split_dataset(X, Y, split_size=0.8) 
+train_features, train_labels, validation_features, validation_labels, test_features, test_labels = split_dataset(X, Y, split_size=0.2) 
 # =============================================================================
 # print(train_features.shape) 
 # print(train_labels.shape) 
@@ -146,4 +147,5 @@ tree_rules = train_regression_tree(train_features, train_labels, 0, max_depth=ma
 print("It has taken {0} seconds to train the algorithm".format(time() - start_time)) 
 
 yHat = predict_all(test_features, tree_rules) 
+R_2=score_r2(yHat, test_labels)
 print("The R2 Score over the test set is: ", (score_r2(yHat, test_labels)))
