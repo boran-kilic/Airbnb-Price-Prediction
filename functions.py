@@ -10,6 +10,10 @@ def cost_function(columnname, estimated_log_price, weight, bias):
         total_error += (estimated_log_price[i] - (weight*columnname[i] + bias))**2
     return total_error / len(columnname)
 
+def r2_score (y_test, y_predict):
+    r2scr = 1 - (np.sum((y_test-y_predict)**2)/np.sum((y_test-np.mean(y_test))**2)) 
+    return r2scr
+
 def mean_squared_error (y_test, y_pred_lr):
     RSS = 0
     for i in range(len(y_test)):

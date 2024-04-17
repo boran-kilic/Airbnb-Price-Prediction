@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 import time
 from functions import *
 
@@ -71,19 +73,26 @@ y = data['log_price'].astype(float).values
 x_train, x_test, y_train, y_test = train_test_split(x,y,seed = 42, test_size = 0.2)
 
 
+
 #EXAMPLE
 start_time = time.time()
 tree_model = fit_tree(x_train, y_train, 200, 10)
 y_predict = predict_tree(tree_model, x_test)
 print("It has taken {0} seconds to train the network".format(time.time() - start_time))
 
-mae = mean_absolute_error(y_test, y_predict)
-mse = mean_squared_error(y_test, y_predict)
-rmse = np.sqrt(mean_squared_error(y_test, y_predict))
-r2 = r2_score(y_test, y_predict)
+#
+# print(y_test.tolist())
+# print(y_predict)
 
 
-print('\nMean Absolute Error: ', mae)
-print('\nMean Squarred Error: ', mse)
-print('\nRoot Mean Squarred Error: ', rmse)
-print('\nR2 Score: ', r2)
+from sklearn import metrics
+mae = metrics.mean_absolute_error(y_test, y_predict)
+mse = metrics.mean_squared_error(y_test, y_predict)
+rmse = np.sqrt(metrics.mean_squared_error(y_test, y_predict))
+r2 = metrics.r2_score(y_test, y_predict)
+
+
+print('\nMean Absolute Error of Linear Regression   : ', mae)
+print('\nMean Squarred Error of Linear Regression     : ', mse)
+print('\nRoot Mean Squarred Error of Linear Regression: ', rmse)
+print('\nR2 Score of Linear Regression                : ', r2)

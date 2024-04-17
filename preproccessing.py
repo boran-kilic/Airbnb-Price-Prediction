@@ -8,16 +8,15 @@ def target_encoding(new_data, columnname):
     new_data[columnname] = new_data[columnname].replace(mean_prices)
     return new_data
 
-
 data = pd.read_csv("Airbnb_Data.csv")
 categorical_col = []
 numerical_col = []
 for column in data.columns:
     
-    if data[column].dtypes != "float64" and data[column].dtypes != "int64":
-        categorical_col.append(column)
-    else:
+    if data[column].dtypes == "float64" or data[column].dtypes == "int64":
         numerical_col.append(column)
+    else:
+        categorical_col.append(column)
 print('\n')
 print(len(categorical_col))
 print(len(numerical_col))
