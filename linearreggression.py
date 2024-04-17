@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from functions import *
 import time
+import matplotlib.pyplot as plt
 
 data = pd.read_csv('proccessed_airbnb_data.csv')
 
@@ -25,18 +26,23 @@ print(f"Training time of linear regression: {training_time} seconds")
 
 y_predict = X_test.dot(beta)
 
-mse = mean_squared_error(y_test, y_predict)
-mae = mean_absolute_error(y_test, y_predict)
-
-from sklearn import metrics
-mae_lr = metrics.mean_absolute_error(y_test, y_predict)
-mse_lr = metrics.mean_squared_error(y_test, y_predict)
-rmse_lr = np.sqrt(metrics.mean_squared_error(y_test, y_predict))
-r2_lr = metrics.r2_score(y_test, y_predict)
+mse_lr = mean_squared_error(y_test, y_predict)
+mae_lr = mean_absolute_error(y_test, y_predict)
+rmse_lr = root_mean_squared_error(y_test, y_predict)
+r2_lr = R2_score(y_test, y_predict)
 
 
-print('\nMean Absolute Error of Linear Regression   : ', mae)
-print('\nMean Squarred Error of Linear Regression     : ', mse)
+
+
+# from sklearn import metrics
+# mae_lr = metrics.mean_absolute_error(y_test, y_predict)
+# mse_lr = metrics.mean_squared_error(y_test, y_predict)
+# rmse_lr = np.sqrt(metrics.mean_squared_error(y_test, y_predict))
+# r2_lr = metrics.r2_score(y_test, y_predict)
+
+
+print('\nMean Absolute Error of Linear Regression   : ', mae_lr)
+print('\nMean Squarred Error of Linear Regression     : ', mse_lr)
 print('\nRoot Mean Squarred Error of Linear Regression: ', rmse_lr)
 print('\nR2 Score of Linear Regression                : ', r2_lr)
 
