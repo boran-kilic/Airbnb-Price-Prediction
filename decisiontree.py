@@ -14,9 +14,10 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,seed = 42, test_size = 0
 
 start_time = time.time()
 tree_model = fit_tree(x_train, y_train, 500, 15)
-y_predict = predict_tree(tree_model, x_test)
-print("It has taken {0} seconds to train the network".format(time.time() - start_time))
+training_time = end_time - start_time  
+print(f"Training time of the decision tree: {training_time} seconds")
 
+y_predict = predict_tree(tree_model, x_test)
 mae = mean_absolute_error(y_test, y_predict)
 mse = mean_squared_error(y_test, y_predict)
 rmse = np.sqrt(mean_squared_error(y_test, y_predict))
