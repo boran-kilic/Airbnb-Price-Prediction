@@ -55,7 +55,7 @@ def train_test_split(x,y, seed, test_size):
     y_test = y_shffl[:test_size]
     return x_train, x_test, y_train, y_test
 
-##############DECISION TREE##################
+##########################DECISION TREE########################################
 
 def fit_tree(X, y, min_samples_split=10, max_depth=5, depth=0):
     num_samples, num_features = X.shape
