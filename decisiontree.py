@@ -10,8 +10,6 @@ y = data['log_price'].astype(float).values
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,seed = 42, test_size = 0.2)
 
-
-
 start_time = time.time()
 tree_model = fit_tree(x_train, y_train, 500, 15)
 end_time = time.time()
@@ -25,7 +23,7 @@ rmse = np.sqrt(mean_squared_error(y_test, y_predict))
 r2 = r2_score(y_test, y_predict)
 
 
-print('\nMean Absolute Error: ', mae)
-print('\nMean Squarred Error: ', mse)
-print('\nRoot Mean Squarred Error: ', rmse)
-print('\nR2 Score: ', r2)
+print('\nMean Absolute Error of Decision Tree: ', mae)
+print('\nMean Squarred Error of Decision Tree: ', mse)
+print('\nRoot Mean Squarred Error of Decision Tree: ', rmse)
+print('\nR2 Score of Decision Tree: ', r2)

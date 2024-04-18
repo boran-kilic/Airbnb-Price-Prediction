@@ -26,13 +26,13 @@ number_of_nans_per_column = data.isna().sum()
 print(number_of_nans_per_column)
 
 
-# data = pd.read_csv(r"C:\Users\User\DUNYANIN EN IYI PROJESI\Airbnb-Price-Prediction\Airbnb_Data.csv")
+############################non-usable columns dropped############################
+# new_data = data.drop(["id","description","name","thumbnail_url",
+#                       "neighbourhood","zipcode",'first_review','host_response_rate','last_review'
+#                       ,'review_scores_rating','host_since','latitude', 'longitude'], axis='columns')
 
-########################################################non-usable columns dropped
 new_data = data.drop(["id","description","name","thumbnail_url",
-                      "neighbourhood","zipcode",'first_review','host_response_rate','last_review'
-                      ,'review_scores_rating','host_since','latitude', 'longitude'], axis='columns')
-
+                      "neighbourhood","zipcode"], axis='columns')
 # new_data = new_data.drop(['host_has_profile_pic', 'host_identity_verified',  'instant_bookable', 
 #                             'number_of_reviews', ],axis = 1)
 
@@ -40,16 +40,16 @@ new_data = data.drop(["id","description","name","thumbnail_url",
 # print("\nBefore\n")
 # print(number_of_nans_per_column)
 
-############################################ some non numerical values converted to numerical
-# today = pd.to_datetime('today')
-# new_data['host_since'] = pd.to_datetime(new_data['host_since'])
-# new_data['host_since'] = (today - new_data['host_since']).dt.days
+##################some non numerical values converted to numerical########################## 
+today = pd.to_datetime('today')
+new_data['host_since'] = pd.to_datetime(new_data['host_since'])
+new_data['host_since'] = (today - new_data['host_since']).dt.days
 
-# new_data['first_review'] = pd.to_datetime(new_data['first_review'])
-# new_data['first_review'] = (today - new_data['first_review']).dt.days
+new_data['first_review'] = pd.to_datetime(new_data['first_review'])
+new_data['first_review'] = (today - new_data['first_review']).dt.days
 
-# new_data['last_review'] = pd.to_datetime(new_data['last_review'])
-# new_data['last_review'] = (today - new_data['last_review']).dt.days
+new_data['last_review'] = pd.to_datetime(new_data['last_review'])
+new_data['last_review'] = (today - new_data['last_review']).dt.days
 
 
 
@@ -59,14 +59,16 @@ new_data['host_has_profile_pic'] = new_data['host_has_profile_pic'].replace({'t'
 new_data['host_identity_verified'] = new_data['host_identity_verified'].replace({'t': 1, 'f': 0})
 new_data['cancellation_policy'] = new_data['cancellation_policy'].replace({'strict': 0,'super_strict_30': 0,
                                                                            'super_strict_60': 0, 'moderate': 1,'flexible': 2})
-#new_data['host_response_rate'] = new_data['host_response_rate'].str.replace('%', '').astype(float) / 100
+new_data['host_response_rate'] = new_data['host_response_rate'].str.replace('%', '').astype(float) / 100
 
 new_data['room_type'] = new_data['room_type'].replace({'Entire home/apt': 2, 'Private room': 1,'Shared room': 0})
 
 new_data = target_encoding(new_data,'city')
 new_data = target_encoding(new_data,'property_type')
 new_data = target_encoding(new_data,'bed_type')
-#########################################################################NaN values filled        
+
+
+##################################NaN values filled #######################################      
 
 new_data = new_data[new_data['log_price'] != 0]
 
@@ -85,7 +87,6 @@ new_data["host_has_profile_pic"] = new_data['host_has_profile_pic'].fillna(1)
 #     if data.host_identity_verified[i] == "t":
 #        b = b+ 1
 # print(b)
-
 # b = 49748 #number of hosts that identified themselves
 
 
@@ -109,11 +110,14 @@ new_data["amenities"] = amenities_count
 
 
     
-# plt.figure(figsize = (40,40))
-# sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
-# plt.show()
+plt.figure(figsize = (40,40))
+sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
+plt.show()
 
-
+new_data = new_data.drop(['first_review','host_response_rate','last_review'
+                      ,'review_scores_rating','host_since','latitude', 'longitude',
+                      'host_has_profile_pic', 'host_identity_verified', 'instant_bookable', 
+                            'number_of_reviews'], axis='columns')
 
 plt.figure(figsize = (20,10))
 sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
