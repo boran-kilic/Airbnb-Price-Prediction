@@ -89,12 +89,22 @@ def get_best_split(X, y, num_features):
                 best_threshold = threshold
     return best_feature, best_threshold
 
+# def MSE_for_dt(child,mean):
+#     RSS = 0
+
+#     for i in range(len(child)):
+#         RSS = RSS + (child[i]-mean)**2       
+#     return RSS/len(child)
+
+# def node_error(left, right):
+#     left_error = MSE_for_dt(left,np.mean(left)) * len(left)
+#     right_error = MSE_for_dt(right,np.mean(right)) * len(right)
+    # return left_error + right_error
 
 def node_error(left, right):
-    left_error = mean_squared_error(left, np.mean(left)) * len(left)
-    right_error = mean_squared_error(right, np.mean(left)) * len(right)
+    left_error = np.var(left) * len(left)
+    right_error = np.var(right) * len(right)
     return left_error + right_error
-
 
 def predict_tree(model, samples):
     if samples.ndim > 1:
@@ -102,6 +112,8 @@ def predict_tree(model, samples):
     else:
         return predict_single_sample(model, samples)
 
+# def predict_tree(model, samples):
+#     return predict_single_sample(model, samples)
 
 def predict_single_sample(model, sample):
     if isinstance(model, tuple): 

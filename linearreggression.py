@@ -28,7 +28,7 @@ y_predict = X_test.dot(beta)
 mse_lr = mean_squared_error(y_test, y_predict)
 mae_lr = mean_absolute_error(y_test, y_predict)
 rmse_lr = root_mean_squared_error(y_test, y_predict)
-r2_lr = R2_score(y_test, y_predict)
+r2_lr = r2_score(y_test, y_predict)
 
 print('\nMean Absolute Error of Linear Regression   : ', mae_lr)
 print('\nMean Squarred Error of Linear Regression     : ', mse_lr)
