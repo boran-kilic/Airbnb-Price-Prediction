@@ -31,16 +31,6 @@ mae_lr = mean_absolute_error(y_test, y_predict)
 rmse_lr = root_mean_squared_error(y_test, y_predict)
 r2_lr = R2_score(y_test, y_predict)
 
-
-
-
-# from sklearn import metrics
-# mae_lr = metrics.mean_absolute_error(y_test, y_predict)
-# mse_lr = metrics.mean_squared_error(y_test, y_predict)
-# rmse_lr = np.sqrt(metrics.mean_squared_error(y_test, y_predict))
-# r2_lr = metrics.r2_score(y_test, y_predict)
-
-
 print('\nMean Absolute Error of Linear Regression   : ', mae_lr)
 print('\nMean Squarred Error of Linear Regression     : ', mse_lr)
 print('\nRoot Mean Squarred Error of Linear Regression: ', rmse_lr)
