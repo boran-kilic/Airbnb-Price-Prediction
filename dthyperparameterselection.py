@@ -16,13 +16,13 @@ samples_splits = []
 mse_values = []
 
 
-for d in range(5, 25, 2):  
-    for s in range(500, 4000, 100):
-        tree_model = fit_tree(x_train, y_train, s, d)
+for depth in range(5, 25, 2):  
+    for sample_size in range(500, 4000, 100):
+        tree_model = fit_tree(x_train, y_train, sample_size, depth)
         y_predict = predict_tree(tree_model, x_test)        
         mse = mean_squared_error(y_test, y_predict)
-        depths.append(d)
-        samples_splits.append(s)
+        depths.append(depth)
+        samples_splits.append(sample_size)
         mse_values.append(mse)
 
 min_mse = np.min(mse_values)  

@@ -1,10 +1,10 @@
 import numpy as np
 
-def cost_function(columnname, estimated_log_price, weight, bias):
-    total_error = 0.0
-    for i in range(len(columnname)):
-        total_error += (estimated_log_price[i] - (weight*columnname[i] + bias))**2
-    return total_error / len(columnname)
+# def cost_function(columnname, estimated_log_price, weight, bias): ##dosyada duracak ama rapora koymacaz
+#     total_error = 0.0
+#     for i in range(len(columnname)):
+#         total_error += (estimated_log_price[i] - (weight*columnname[i] + bias))**2
+#     return total_error / len(columnname)
 
 def r2_score (y_test, y_predict):
     nominator = 0
@@ -15,18 +15,19 @@ def r2_score (y_test, y_predict):
         denominator =  denominator + (y_test[i]- y_test.mean())**2
     return 1-(nominator/denominator)    
 
-def mean_squared_error (y_test, y_pred_lr):
+def calc_RSS (y_test, y_pred_lr):
     RSS = 0
     for i in range(len(y_test)):
-        RSS = RSS + (y_test[i]-y_pred_lr[i])**2
+        RSS = RSS + (y_test[i]-y_pred_lr[i])**2    
+    return RSS
+
+def mean_squared_error (y_test, y_pred_lr):
+    RSS = calc_RSS (y_test, y_pred_lr)
     MSE = RSS/len(y_test)
     return MSE
 
 def root_mean_squared_error(y_test,y_pred_lr):
-    RSS = 0
-    for i in range(len(y_test)):
-        RSS = RSS + (y_test[i]-y_pred_lr[i])**2
-    MSE = RSS/len(y_test)
+    MSE = mean_squared_error (y_test, y_pred_lr)
     return np.sqrt(MSE)
 
 def mean_absolute_error (y_test, y_pred_lr):
@@ -38,10 +39,8 @@ def mean_absolute_error (y_test, y_pred_lr):
 
 def train_test_split(x,y, seed, test_size):
     np.random.seed(seed)  
-    test_size = int(len(x) * test_size)  
-    
+    test_size = int(len(x) * test_size)     
     x = x.to_numpy()
-    y = y
     
     indices = np.arange(len(x))
     np.random.shuffle(indices)
@@ -62,11 +61,9 @@ def fit_tree(X, y, min_samples_split=10, max_depth=5, depth=0):
     if num_samples < min_samples_split or depth >= max_depth:
         return np.mean(y)  
 
-
     best_feature, best_threshold = get_best_split(X, y, num_features)
     if best_feature is None:
         return np.mean(y)  
-
 
     left_indices = X[:, best_feature] <= best_threshold
     right_indices = X[:, best_feature] > best_threshold
@@ -94,13 +91,12 @@ def get_best_split(X, y, num_features):
 
 
 def calculate_error(left, right):
-    left_error = np.var(left) * len(left)
-    right_error = np.var(right) * len(right)
+    left_error = mean_squared_error(left, np.mean(left)) * len(left)
+    right_error = mean_squared_error(right, np.mean(left)) * len(right)
     return left_error + right_error
 
 
 def predict_tree(model, samples):
-
     if samples.ndim > 1:
         return [predict_single_sample(model, sample) for sample in samples]
     else:
@@ -117,5 +113,56 @@ def predict_single_sample(model, sample):
     else:
         return model 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
