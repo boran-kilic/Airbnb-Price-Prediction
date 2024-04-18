@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
-import time
 import matplotlib.pyplot as plt
-from mpl_toolkits import mplot3d
 from functions import *
 
 
@@ -26,8 +24,6 @@ for d in range(5, 25, 2):
         depths.append(d)
         samples_splits.append(s)
         mse_values.append(mse)
-
-
 
 min_mse = np.min(mse_values)  
 min_index = np.argmin(mse_values) 

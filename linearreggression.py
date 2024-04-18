@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from functions import *
 import time
-import matplotlib.pyplot as plt
 
 data = pd.read_csv('proccessed_airbnb_data.csv')
 
