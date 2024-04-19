@@ -11,7 +11,7 @@ y = data['log_price'].astype(float).values
 x_train, x_test, y_train, y_test = train_test_split(x,y,seed = 42, test_size = 0.2)
 
 start_time = time.time()
-tree_model = fit_tree(x_train, y_train, 500, 15)
+tree_model = fit_tree(x_train, y_train, 500, 10)
 end_time = time.time()
 training_time = end_time - start_time  
 print(f"Training time of the decision tree: {training_time} seconds")

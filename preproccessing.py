@@ -8,6 +8,7 @@ def target_encoding(new_data, columnname):
     return new_data
 
 data = pd.read_csv("Airbnb_Data.csv")
+
 categorical_col = []
 numerical_col = []
 for column in data.columns:
@@ -20,77 +21,57 @@ print('\n')
 print(len(categorical_col))
 print(len(numerical_col))
 
-
-number_of_nans_per_column = data.isna().sum()
-
+############################ non-usable columns dropped ############################
+new_data = data.drop(["id","description","name","thumbnail_url","zipcode"], axis='columns')
+number_of_nans_per_column = new_data.isna().sum()
+print('\n')
 print(number_of_nans_per_column)
 
+############################ columns with too many nan values dropped ################
+new_data = new_data.drop(['first_review','host_response_rate','last_review','review_scores_rating', ],axis = 1)
 
-############################non-usable columns dropped############################
-# new_data = data.drop(["id","description","name","thumbnail_url",
-#                       "neighbourhood","zipcode",'first_review','host_response_rate','last_review'
-#                       ,'review_scores_rating','host_since','latitude', 'longitude'], axis='columns')
+number_of_nans_per_column = new_data.isna().sum()
+print('\n')
+print(number_of_nans_per_column)
 
-new_data = data.drop(["id","description","name","thumbnail_url",
-                      "neighbourhood","zipcode"], axis='columns')
-# new_data = new_data.drop(['host_has_profile_pic', 'host_identity_verified',  'instant_bookable', 
-#                             'number_of_reviews', ],axis = 1)
-
-# number_of_nans_per_column = new_data.isna().sum()
-# print("\nBefore\n")
-# print(number_of_nans_per_column)
-
-##################some non numerical values converted to numerical########################## 
+################## categorical columns converted to numerical ########################## 
 today = pd.to_datetime('today')
 new_data['host_since'] = pd.to_datetime(new_data['host_since'])
 new_data['host_since'] = (today - new_data['host_since']).dt.days
 
-new_data['first_review'] = pd.to_datetime(new_data['first_review'])
-new_data['first_review'] = (today - new_data['first_review']).dt.days
-
-new_data['last_review'] = pd.to_datetime(new_data['last_review'])
-new_data['last_review'] = (today - new_data['last_review']).dt.days
-
-
-
+#categories with binary values
 new_data['cleaning_fee'] = new_data['cleaning_fee'].replace({True: 1, False: 0})        
 new_data['instant_bookable'] = new_data['instant_bookable'].replace({'t': 1, 'f': 0})
 new_data['host_has_profile_pic'] = new_data['host_has_profile_pic'].replace({'t': 1, 'f': 0})
 new_data['host_identity_verified'] = new_data['host_identity_verified'].replace({'t': 1, 'f': 0})
+#categories with natural order
 new_data['cancellation_policy'] = new_data['cancellation_policy'].replace({'strict': 0,'super_strict_30': 0,
                                                                            'super_strict_60': 0, 'moderate': 1,'flexible': 2})
-new_data['host_response_rate'] = new_data['host_response_rate'].str.replace('%', '').astype(float) / 100
-
 new_data['room_type'] = new_data['room_type'].replace({'Entire home/apt': 2, 'Private room': 1,'Shared room': 0})
 
+#target encoding for some categories
 new_data = target_encoding(new_data,'city')
 new_data = target_encoding(new_data,'property_type')
 new_data = target_encoding(new_data,'bed_type')
+new_data = target_encoding(new_data,"neighbourhood")
 
+#will not be added to report but will stay here
+# new_data['first_review'] = pd.to_datetime(new_data['first_review'])
+# new_data['first_review'] = (today - new_data['first_review']).dt.days
+# new_data['last_review'] = pd.to_datetime(new_data['last_review'])
+# new_data['last_review'] = (today - new_data['last_review']).dt.days
+#new_data['host_response_rate'] = new_data['host_response_rate'].str.replace('%', '').astype(float) / 100
+#will not be added to report but will stay here
 
-##################################NaN values filled #######################################      
-
+################################## NaN values are handled #######################################      
+#some rows with nan values for some features are dropped
 new_data = new_data[new_data['log_price'] != 0]
+new_data = new_data.dropna(subset=['host_has_profile_pic'])
+new_data = new_data.dropna(subset=['host_identity_verified'])
+new_data = new_data.dropna(subset=['host_since'])
+new_data = new_data.dropna(subset=['neighbourhood'])
 
-
-# a = 0
-# for i in range(74111):
-#     if data.host_has_profile_pic[i] == "t":
-#        a = a + 1
-# print(a)
-# # a = 73697 # number of hosts having a profile pic
-new_data["host_has_profile_pic"] = new_data['host_has_profile_pic'].fillna(1)
-
-
-# b = 0
-# for i in range(74111):
-#     if data.host_identity_verified[i] == "t":
-#        b = b+ 1
-# print(b)
-# b = 49748 #number of hosts that identified themselves
-
-
-new_data['host_identity_verified'].fillna(1,inplace=True)
+#nan values filled with mean values
 new_data['bathrooms'].fillna(round(new_data["bathrooms"].mean()),inplace=True)
 new_data['bedrooms'].fillna(round(new_data["bedrooms"].mean()),inplace=True)
 new_data["beds"].fillna(round(new_data["beds"].mean()),inplace=True)
@@ -102,25 +83,47 @@ for i in new_data["amenities"]:
     
 new_data["amenities"] = amenities_count
 
+number_of_nans_per_column = new_data.isna().sum()
+print("\nAfter\n" )
+print(number_of_nans_per_column)
 
-# number_of_nans_per_column = new_data.isna().sum()
-# print("\nAfter\n" )
-# print(number_of_nans_per_column)
+#will not be added to report but will stay here
+# a = 0
+# for i in range(74111):
+#     if data.host_has_profile_pic[i] == "t":
+#        a = a + 1
+# print(a)
+# # a = 73697 # number of hosts having a profile pic
+# new_data["host_has_profile_pic"] = new_data['host_has_profile_pic'].fillna(1)
 
 
+# b = 0
+# for i in range(74111):
+#     if data.host_identity_verified[i] == "t":
+#        b = b+ 1
+# print(b)
+# b = 49748 #number of hosts that identified themselves
 
-    
-plt.figure(figsize = (40,40))
+# new_data['host_identity_verified'].fillna(1,inplace=True)
+#will not be added to report but will stay here
+
+
+plt.figure(figsize = (40,30))
 sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
+plt.subplots_adjust(left=0.2, bottom=0.3)
 plt.show()
 
-new_data = new_data.drop(['first_review','host_response_rate','last_review'
-                      ,'review_scores_rating','host_since','latitude', 'longitude',
-                      'host_has_profile_pic', 'host_identity_verified', 'instant_bookable', 
-                            'number_of_reviews'], axis='columns')
+new_data = new_data.drop(['host_since','latitude', 'longitude',
+                          'host_has_profile_pic', 'host_identity_verified', 
+                          'instant_bookable','number_of_reviews'], axis='columns')
+
+number_of_nans_per_column = new_data.isna().sum()
+print("\nAfter\n" )
+print(number_of_nans_per_column)
 
 plt.figure(figsize = (20,10))
 sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
+plt.subplots_adjust(left=0.2, bottom=0.3)
 plt.show()
 
 new_data.to_csv('proccessed_airbnb_data.csv', index=False)
