@@ -16,7 +16,7 @@ end_time = time.time()
 training_time = end_time - start_time  
 print(f"Training time of the decision tree: {training_time} seconds")
 
-y_predict = predict_tree(tree_model, x_test)
+y_predict = np.array(predict_tree(tree_model, x_test))
 mae = mean_absolute_error(y_test, y_predict)
 mse = mean_squared_error(y_test, y_predict)
 rmse = np.sqrt(mean_squared_error(y_test, y_predict))
