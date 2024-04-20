@@ -1,4 +1,4 @@
-import numpy as np
+
 #############################DECISION TREE#####################################
 
 def fit_tree(x_train, y_train, min_samples, max_depth, depth=0):
@@ -19,9 +19,8 @@ def fit_tree(x_train, y_train, min_samples, max_depth, depth=0):
 
 def DT_RSS(child):
     RSS = 0
-    if len(child) != 0:
-        mean = np.mean(child) 
-        RSS =sum((x - mean) ** 2 for x in child)
+    mean = np.mean(child) 
+    RSS =sum((x - mean) ** 2 for x in child)
     return RSS
 
 def best_split(x_train, y_train, num_features):

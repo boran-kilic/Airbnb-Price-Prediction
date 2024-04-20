@@ -55,6 +55,62 @@ def train_test_split(x,y, seed, test_size):
     y_test = y_shffl[:test_size]
     return x_train, x_test, y_train, y_test
 
+# #############################DECISION TREE#####################################
+
+# def fit_tree(x_train, y_train, min_samples, max_depth, depth=0):
+#     num_samples, num_features = x_train.shape
+#     if num_samples < min_samples or depth >= max_depth:
+#         return np.mean(y_train)  
+
+#     best_feature, best_threshold = get_best_split(x_train, y_train, num_features)
+#     if best_feature is None:
+#         return np.mean(y_train)  
+
+#     left_indices = x_train[:, best_feature] <= best_threshold
+#     right_indices = x_train[:, best_feature] > best_threshold
+#     left_child = fit_tree(x_train[left_indices], y_train[left_indices], min_samples, max_depth, depth + 1)
+#     right_child = fit_tree(x_train[right_indices], y_train[right_indices], min_samples, max_depth, depth + 1)
+
+#     return best_feature, best_threshold, left_child, right_child
+
+# def node_RSS(left, right):
+#     left_error = np.var(left) * len(left)
+#     right_error = np.var(right) * len(right)
+#     return left_error + right_error
+
+# def get_best_split(x_train, y_train, num_features):
+#     min_error = float('inf')
+#     best_feature = None
+#     best_threshold = None
+#     for feature_index in range(num_features):
+#         thresholds = np.unique(x_train[:, feature_index])
+#         for threshold in thresholds:
+#             left = y_train[x_train[:, feature_index] <= threshold]
+#             right = y_train[x_train[:, feature_index] > threshold]
+#             error = node_RSS(left, right)
+#             if error < min_error:
+#                 min_error = error
+#                 best_feature = feature_index
+#                 best_threshold = threshold
+#     return best_feature, best_threshold
+
+# def predict_one(tree, row):
+#     if type(tree) is not tuple: 
+#         return tree         
+#     else:        
+#         feature, threshold, left_child, right_child = tree
+#         if row[feature] <= threshold:
+#             return predict_one(left_child, row)
+#         else:
+#             return predict_one(right_child, row)
+        
+# def predict_tree(tree, x_test):
+#     if len(x_test.shape) > 1:
+#         return [predict_one(tree, row) for row in x_test]
+#     else:
+#         return predict_one(tree, x_test)
+
+
 #############################DECISION TREE#####################################
 
 def fit_tree(x_train, y_train, min_samples, max_depth, depth=0):
@@ -62,76 +118,54 @@ def fit_tree(x_train, y_train, min_samples, max_depth, depth=0):
     if num_samples < min_samples or depth >= max_depth:
         return np.mean(y_train)  
 
-    best_feature, best_threshold = get_best_split(x_train, y_train, num_features)
-    if best_feature is None:
+    best_ft, best_thr = best_split(x_train, y_train, num_features)
+    if best_ft is None:
         return np.mean(y_train)  
 
-    left_indices = x_train[:, best_feature] <= best_threshold
-    right_indices = x_train[:, best_feature] > best_threshold
-    left_child = fit_tree(x_train[left_indices], y_train[left_indices], min_samples, max_depth, depth + 1)
-    right_child = fit_tree(x_train[right_indices], y_train[right_indices], min_samples, max_depth, depth + 1)
+    left_idxs = x_train[:, best_ft] <= best_thr
+    right_idxs = x_train[:, best_ft] > best_thr
+    left_child = fit_tree(x_train[left_idxs], y_train[left_idxs], min_samples, max_depth, depth + 1)
+    right_child = fit_tree(x_train[right_idxs], y_train[right_idxs], min_samples, max_depth, depth + 1)
 
-    return best_feature, best_threshold, left_child, right_child
+    return best_ft, best_thr, left_child, right_child
 
-def node_RSS(left, right):
-    left_error = np.var(left) * len(left)
-    right_error = np.var(right) * len(right)
-    return left_error + right_error
+def DT_RSS(child):
+    RSS = 0
+    mean = np.mean(child) 
+    RSS = np.sum((child - mean) ** 2)
+    return RSS
 
-def get_best_split(x_train, y_train, num_features):
+def best_split(x_train, y_train, num_features):
     min_error = float('inf')
-    best_feature = None
-    best_threshold = None
-    for feature_index in range(num_features):
-        thresholds = np.unique(x_train[:, feature_index])
-        for threshold in thresholds:
-            left = y_train[x_train[:, feature_index] <= threshold]
-            right = y_train[x_train[:, feature_index] > threshold]
-            error = node_RSS(left, right)
+    best_ft = None
+    best_thr = None
+    for fidx in range(num_features):
+        possible_thrs = np.unique(x_train[:, fidx])
+        for th in possible_thrs:
+            left = y_train[x_train[:, fidx] <= th]
+            right = y_train[x_train[:, fidx] > th]
+            error = DT_RSS(left) + DT_RSS(right)
             if error < min_error:
                 min_error = error
-                best_feature = feature_index
-                best_threshold = threshold
-    return best_feature, best_threshold
+                best_ft = fidx
+                best_thr = th
+    return best_ft, best_thr
 
-def predict_one(tree, row):
+def predict(tree, row):
     if type(tree) is not tuple: 
         return tree         
     else:        
         feature, threshold, left_child, right_child = tree
         if row[feature] <= threshold:
-            return predict_one(left_child, row)
+            return predict(left_child, row)
         else:
-            return predict_one(right_child, row)
+            return predict(right_child, row)
         
 def predict_tree(tree, x_test):
     if len(x_test.shape) > 1:
-        return [predict_one(tree, row) for row in x_test]
+        return [predict(tree, row) for row in x_test]
     else:
-        return predict_one(tree, x_test)
-
-
-
-    
-
-
-
-
-
-
-#############my desprite trialss
-# def RSS_dt(child,mean):
-#     RSS = 0
-#     for i in range(len(child)):
-#         RSS = RSS + (child[i]-mean)**2       
-#     return RSS
-
-# def node_RSS(left, right):
-#     left_error = RSS_dt(left,np.mean(left)) * len(left)
-#     right_error = RSS_dt(right,np.mean(right)) * len(right)
-#     return left_error + right_error
-
-
+        return predict(tree, x_test)
 
 
 
