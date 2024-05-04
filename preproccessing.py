@@ -56,13 +56,6 @@ new_data = target_encoding(new_data,'property_type')
 new_data = target_encoding(new_data,'bed_type')
 new_data = target_encoding(new_data,"neighbourhood")
 
-#will not be added to report but will stay here
-# new_data['first_review'] = pd.to_datetime(new_data['first_review'])
-# new_data['first_review'] = (today - new_data['first_review']).dt.days
-# new_data['last_review'] = pd.to_datetime(new_data['last_review'])
-# new_data['last_review'] = (today - new_data['last_review']).dt.days
-#new_data['host_response_rate'] = new_data['host_response_rate'].str.replace('%', '').astype(float) / 100
-#will not be added to report but will stay here
 
 ################################## NaN values are handled #######################################      
 #some rows with nan values for some features are dropped
@@ -108,22 +101,36 @@ plt.subplots_adjust(left=0.2, bottom=0.3)
 plt.show()
 
 
+#################deleting outliers####################
+columns_to_delete_outliers = ["log_price","amenities","neighbourhood"]
+
+for column in columns_to_delete_outliers:
+    Q1 = new_data[column].quantile(0.25)
+    Q3 = new_data[column].quantile(0.75)
+    IQR = Q3 - Q1
+    
+    condition = ~((new_data[column] < (Q1 - 1.5 * IQR)) | (new_data[column] > (Q3 + 1.5 * IQR)))
+    
+    new_data = new_data[condition]
+
 ########################## standardization #####################################
 
 columns_to_standardize = ["log_price","property_type","room_type","amenities",
                         "accommodates","bathrooms","bed_type","city","neighbourhood","bedrooms","beds"]
 
-
 for column in columns_to_standardize:
     col_min = np.min(new_data[column])
-    #col_max = np.max(new_data[column])
+    col_max = np.max(new_data[column])
     col_var = np.var(new_data[column])
     # new_data[column] = (new_data[column] - col_min) / (col_max - col_min)
     new_data[column] = (new_data[column] - col_min) / (col_var)
     
-    
+new_data.to_csv('proccessed_airbnb_data.csv', index=False)   
 
-
+plt.figure(figsize = (20,10))
+sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
+plt.subplots_adjust(left=0.2, bottom=0.3)
+plt.show()
 
 
 

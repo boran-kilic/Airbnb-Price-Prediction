@@ -24,32 +24,32 @@ plt.tight_layout()
 plt.show()
 
 
-columns_to_delete_outliers = ["log_price","amenities","neighbourhood"]
+# columns_to_delete_outliers = ["log_price","amenities","neighbourhood"]
 
-for column in columns_to_delete_outliers:
-    Q1 = data[column].quantile(0.25)
-    Q3 = data[column].quantile(0.75)
-    IQR = Q3 - Q1
+# for column in columns_to_delete_outliers:
+#     Q1 = data[column].quantile(0.25)
+#     Q3 = data[column].quantile(0.75)
+#     IQR = Q3 - Q1
     
-    condition = ~((data[column] < (Q1 - 1.5 * IQR)) | (data[column] > (Q3 + 1.5 * IQR)))
+#     condition = ~((data[column] < (Q1 - 1.5 * IQR)) | (data[column] > (Q3 + 1.5 * IQR)))
     
-    data = data[condition]
+#     data = data[condition]
 
 
-plt.figure(figsize=(6, 4)) 
-sns.histplot(data['log_price'],bins = len(data['log_price'].unique()), kde=False)
-plt.title("Distribution of log_price")
-plt.xlabel('Value')
-plt.ylabel('Frequency')
-plt.show()
+# plt.figure(figsize=(6, 4)) 
+# sns.histplot(data['log_price'],bins = len(data['log_price'].unique()), kde=False)
+# plt.title("Distribution of log_price")
+# plt.xlabel('Value')
+# plt.ylabel('Frequency')
+# plt.show()
     
-fig, axes = plt.subplots(nrows=3, ncols=4, figsize=(15, 10))
-axes = axes.flatten()
-for i, col in enumerate(data.columns[1:]):
-    sns.histplot(data[col],bins = len(data[col].unique()), kde=False, ax=axes[i])
-    axes[i].set_title(col)
-    axes[i].set_xlabel('Value')
-    axes[i].set_ylabel('Frequency')
+# fig, axes = plt.subplots(nrows=3, ncols=4, figsize=(15, 10))
+# axes = axes.flatten()
+# for i, col in enumerate(data.columns[1:]):
+#     sns.histplot(data[col],bins = len(data[col].unique()), kde=False, ax=axes[i])
+#     axes[i].set_title(col)
+#     axes[i].set_xlabel('Value')
+#     axes[i].set_ylabel('Frequency')
 
-plt.tight_layout()
-plt.show()
+# plt.tight_layout()
+# plt.show()
