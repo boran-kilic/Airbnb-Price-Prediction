@@ -1,10 +1,6 @@
 import numpy as np
 
-# def cost_function(columnname, estimated_log_price, weight, bias): ##dosyada duracak ama rapora koymacaz
-#     total_error = 0.0
-#     for i in range(len(columnname)):
-#         total_error += (estimated_log_price[i] - (weight*columnname[i] + bias))**2
-#     return total_error / len(columnname)
+
 
 ##########################common functions#####################################
 def r2_score (y_test, y_predict):
@@ -55,60 +51,6 @@ def train_test_split(x,y, seed, test_size):
     y_test = y_shffl[:test_size]
     return x_train, x_test, y_train, y_test
 
-# #############################DECISION TREE#####################################
-
-# def fit_tree(x_train, y_train, min_samples, max_depth, depth=0):
-#     num_samples, num_features = x_train.shape
-#     if num_samples < min_samples or depth >= max_depth:
-#         return np.mean(y_train)  
-
-#     best_feature, best_threshold = get_best_split(x_train, y_train, num_features)
-#     if best_feature is None:
-#         return np.mean(y_train)  
-
-#     left_indices = x_train[:, best_feature] <= best_threshold
-#     right_indices = x_train[:, best_feature] > best_threshold
-#     left_child = fit_tree(x_train[left_indices], y_train[left_indices], min_samples, max_depth, depth + 1)
-#     right_child = fit_tree(x_train[right_indices], y_train[right_indices], min_samples, max_depth, depth + 1)
-
-#     return best_feature, best_threshold, left_child, right_child
-
-# def node_RSS(left, right):
-#     left_error = np.var(left) * len(left)
-#     right_error = np.var(right) * len(right)
-#     return left_error + right_error
-
-# def get_best_split(x_train, y_train, num_features):
-#     min_error = float('inf')
-#     best_feature = None
-#     best_threshold = None
-#     for feature_index in range(num_features):
-#         thresholds = np.unique(x_train[:, feature_index])
-#         for threshold in thresholds:
-#             left = y_train[x_train[:, feature_index] <= threshold]
-#             right = y_train[x_train[:, feature_index] > threshold]
-#             error = node_RSS(left, right)
-#             if error < min_error:
-#                 min_error = error
-#                 best_feature = feature_index
-#                 best_threshold = threshold
-#     return best_feature, best_threshold
-
-# def predict_one(tree, row):
-#     if type(tree) is not tuple: 
-#         return tree         
-#     else:        
-#         feature, threshold, left_child, right_child = tree
-#         if row[feature] <= threshold:
-#             return predict_one(left_child, row)
-#         else:
-#             return predict_one(right_child, row)
-        
-# def predict_tree(tree, x_test):
-#     if len(x_test.shape) > 1:
-#         return [predict_one(tree, row) for row in x_test]
-#     else:
-#         return predict_one(tree, x_test)
 
 
 #############################DECISION TREE#####################################
@@ -119,8 +61,6 @@ def fit_tree(x_train, y_train, min_samples, max_depth, depth=0):
         return np.mean(y_train)  
 
     best_ft, best_thr = best_split(x_train, y_train, num_features)
-    if best_ft is None:
-        return np.mean(y_train)  
 
     left_idxs = x_train[:, best_ft] <= best_thr
     right_idxs = x_train[:, best_ft] > best_thr

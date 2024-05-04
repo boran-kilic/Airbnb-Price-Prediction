@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 def target_encoding(new_data, columnname):
     mean_prices = new_data.groupby(columnname)['log_price'].mean()
@@ -87,26 +88,6 @@ number_of_nans_per_column = new_data.isna().sum()
 print("\nAfter\n" )
 print(number_of_nans_per_column)
 
-#will not be added to report but will stay here
-# a = 0
-# for i in range(74111):
-#     if data.host_has_profile_pic[i] == "t":
-#        a = a + 1
-# print(a)
-# # a = 73697 # number of hosts having a profile pic
-# new_data["host_has_profile_pic"] = new_data['host_has_profile_pic'].fillna(1)
-
-
-# b = 0
-# for i in range(74111):
-#     if data.host_identity_verified[i] == "t":
-#        b = b+ 1
-# print(b)
-# b = 49748 #number of hosts that identified themselves
-
-# new_data['host_identity_verified'].fillna(1,inplace=True)
-#will not be added to report but will stay here
-
 
 plt.figure(figsize = (40,30))
 sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
@@ -126,11 +107,23 @@ sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
 plt.subplots_adjust(left=0.2, bottom=0.3)
 plt.show()
 
-new_data.to_csv('proccessed_airbnb_data.csv', index=False)
 
-# print(new_data.columns)
+########################## standardization #####################################
 
-# plt.figure()
-# plt.title("Color")
-# plt.hist(new_data.)
+columns_to_standardize = ["log_price","property_type","room_type","amenities",
+                        "accommodates","bathrooms","bed_type","city","neighbourhood","bedrooms","beds"]
+
+
+for column in columns_to_standardize:
+    col_min = np.min(new_data[column])
+    #col_max = np.max(new_data[column])
+    col_var = np.var(new_data[column])
+    # new_data[column] = (new_data[column] - col_min) / (col_max - col_min)
+    new_data[column] = (new_data[column] - col_min) / (col_var)
+    
+    
+
+
+
+
 
