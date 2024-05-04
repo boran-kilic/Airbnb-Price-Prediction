@@ -10,6 +10,7 @@ y = data['log_price'].astype(float).values
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,seed = 42, test_size = 0.2)
 
+#x_train, x_test, y_train, y_test,x_validation, y_validation= train_test_split(x,y,seed = 42, test_size = 0.2, validation_size=0.2)
 
 X_train = np.column_stack((np.ones(len(x_train)), x_train))
 X_test =  np.column_stack((np.ones(len(x_test)), x_test))

@@ -34,9 +34,10 @@ def mean_absolute_error (y_test, y_predict):
     MSE = total/len(y_test)
     return MSE
 
-def train_test_split(x,y, seed, test_size):
+def train_test_split(x,y, seed, test_size, validation_size=0):
     np.random.seed(seed)  
     test_size = int(len(x) * test_size)     
+    validation_size = int(len(x) * validation_size) 
     x = x.to_numpy()
     
     indices = np.arange(len(x))
@@ -45,11 +46,15 @@ def train_test_split(x,y, seed, test_size):
     x_shffl = x[indices]
     y_shffl = y[indices]
     
-    x_train = x_shffl[test_size:]
-    x_test = x_shffl[:test_size]
-    y_train = y_shffl[test_size:]
-    y_test = y_shffl[:test_size]
-    return x_train, x_test, y_train, y_test
+    x_train = x_shffl[validation_size + test_size:]
+    x_test = x_shffl[validation_size:validation_size + test_size]
+    x_validation = x_shffl[:validation_size]
+    
+    y_train = y_shffl[validation_size + test_size:]
+    y_test = y_shffl[validation_size:validation_size + test_size]
+    y_validation = y_shffl[:validation_size]    
+    
+    return x_train, x_test, y_train, y_test, x_validation, y_validation
 
 
 
