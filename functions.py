@@ -54,7 +54,10 @@ def train_test_split(x,y, seed, test_size, validation_size=0):
     y_test = y_shffl[validation_size:validation_size + test_size]
     y_validation = y_shffl[:validation_size]    
     
-    return x_train, x_test, y_train, y_test, x_validation, y_validation
+    if validation_size == 0:
+        return x_train, x_test, y_train, y_test    
+    else:
+        return x_train, x_test, y_train, y_test, x_validation, y_validation
 
 
 
