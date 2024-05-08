@@ -32,7 +32,8 @@ beta = np.linalg.inv(X_train_transpose.dot(X_train)).dot(X_train_transpose).dot(
   
 
 y_predict = X_test.dot(beta)
-a=X_train[:5000,1:0]
+a=X_train[:5000]
+a*=np.delete(a,0)
 b=y_predict[:5000]
 # # Visualizing the Training set results
 # plt.scatter(X_train, y_train, color='red')

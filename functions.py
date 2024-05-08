@@ -116,6 +116,78 @@ def predict_tree(tree, x_test):
         return predict(tree, x_test)
 
 
+#########################neural network############################
+
+def relu(x_value): #relu activation func
+ return np.maximum(0, x_value)
+ 
+def relu_grad(x_value): 
+ return (x_value > 0) * 1
+
+class NeuralNetwork(): 
+     def __init__(self, neuron_number_in_hidden_layer, num_of_features, learning_rate):
+         self.bias_hidden_layer = np.random.normal(0, 0.3, size = (1, neuron_number_in_hidden_layer)) #Bias for hidden layer
+         self.weight_hidden_layer= np.random.normal(0, 0.3, size = (num_of_features, neuron_number_in_hidden_layer)) #Weight for hidden layer
+         self.bias_output = np.random.normal(0, 0.3, size = (1, 1)) #Bias for output
+         self.weight_output = np.random.normal(0, 0.3, size = (neuron_number_in_hidden_layer, 1)) 
+        #Weight for output
+         self.learning_rate = learning_rate #learning rate
+     
+     def train_one_iteration(self, train_X, train_Y): 
+         loss = 0 
+         num_of_samples = train_Y.shape[0] 
+         x_value = np.zeros((1, train_X.shape[1])) 
+         
+         for i in range(num_of_samples): 
+             x_value[0, :] = train_X[i, :] 
+             y_value = train_Y[i] 
+             
+             hidden_layer_before = x_value.dot(self.weight_hidden_layer) + self.bias_hidden_layer 
+             hidden_layer = relu(hidden_layer_before) #putting into ReLU function
+             output = hidden_layer.dot(self.weight_output) + self.bias_output #output
+             test_Y_predicted = relu(output) #putting into ReLU function
+             
+             error_value = y_value - test_Y_predicted #Error calculation
+             loss = loss + error_value * error_value/num_of_samples #Loss calculation
+             
+             weight_output_grad = -2 * error_value * hidden_layer.T * relu_grad(output) #derivative
+             bias_output_grad = -2 * error_value * relu_grad(output) #derivative
+             weight_hidden_layer_gradient = -2 * error_value * relu_grad(output) * x_value.T * (self.weight_output.T * relu_grad(hidden_layer_before)) #derivative
+             bias_hidden_layer_gradient = -2 * error_value * relu_grad(output) * (self.weight_output.T * relu_grad(hidden_layer_before)) #derivative
+             
+             self.weight_output = self.weight_output - self.learning_rate * weight_output_grad #update
+             self.bias_output = self.bias_output - self.learning_rate * bias_output_grad #update
+             self.weight_hidden_layer = self.weight_hidden_layer - self.learning_rate * weight_hidden_layer_gradient #update
+             self.bias_hidden_layer = self.bias_hidden_layer - self.learning_rate * bias_hidden_layer_gradient #update
+     
+         return loss 
+     
+     def training(self, train_X, train_Y, maximum_epoch = 25, threshold_to_stop = 0.00005): 
+         loss_record = [] 
+         for i in range(maximum_epoch): #Iteration on each epoch
+             loss = NeuralNetwork.train_one_iteration(self, train_X, train_Y) #Training each epoch
+             
+             loss_record.append(loss[0][0]) #Finding and recording loss after  each epoch
+             if (i >= 1) and (loss_record[-2] - loss_record[-1] < threshold_to_stop): #Condition to stop the training when converged
+                 break 
+         return loss_record 
+             
+     def predict(self, train_X): 
+        test_Y_predicted_array = np.zeros(train_X.shape[0]) #create the array
+        x_value = np.zeros((1, train_X.shape[1])) #create the array
+        
+        for i in range(train_X.shape[0]): 
+            x_value[0, :] = train_X[i, :] 
+            
+            hidden_layer_before = x_value.dot(self.weight_hidden_layer) + self.bias_hidden_layer 
+            hidden_layer = relu(hidden_layer_before) #hidden layer update
+            
+            output = hidden_layer.dot(self.weight_output) + self.bias_output 
+            test_Y_predicted = relu(output) #Getting the predictions
+            test_Y_predicted_array[i] = test_Y_predicted 
+         
+        return test_Y_predicted_array
+ 
 
 
 
