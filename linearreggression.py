@@ -6,7 +6,7 @@ import time
 data = pd.read_csv('proccessed_airbnb_data.csv')
 
 x = data.drop(["log_price"], axis=1)
-y = data['log_price'].astype(float).values
+y = data['log_price']
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,seed = 42, test_size = 0.2)
 

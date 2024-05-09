@@ -39,7 +39,7 @@ def train_test_split(x,y, seed, test_size, validation_size=0):
     test_size = int(len(x) * test_size)     
     validation_size = int(len(x) * validation_size) 
     x = x.to_numpy()
-    
+    y = y.to_numpy()
     indices = np.arange(len(x))
     np.random.shuffle(indices)
     

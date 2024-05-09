@@ -119,11 +119,12 @@ columns_to_standardize = ["log_price","property_type","room_type","amenities",
                         "accommodates","bathrooms","bed_type","city","neighbourhood","bedrooms","beds"]
 
 for column in columns_to_standardize:
-    col_min = np.min(new_data[column])
-    col_max = np.max(new_data[column])
-    col_var = np.var(new_data[column])
+    # col_min = np.min(new_data[column])
+    # col_max = np.max(new_data[column]) 
     # new_data[column] = (new_data[column] - col_min) / (col_max - col_min)
-    new_data[column] = (new_data[column] - col_min) / (col_var)
+    col_mean = np.mean(new_data[column])
+    col_var = np.var(new_data[column])
+    new_data[column] = (new_data[column] - col_mean) / (col_var)
     
 new_data.to_csv('proccessed_airbnb_data.csv', index=False)   
 

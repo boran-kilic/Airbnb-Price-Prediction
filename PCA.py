@@ -15,7 +15,7 @@ sorted_eigenvalue = eigen_values[sorted_index]
 sorted_eigenvectors = eigen_vectors[:,sorted_index]
 
 # Step 5: Select a subset from the rearranged Eigen vectors
-num_components = 2  # This is less than or equal to the original dimensions
+num_components = 7  # This is less than or equal to the original dimensions
 selected_eigenvectors = sorted_eigenvectors[:, :num_components]
 
 # Step 6: Transform the data
