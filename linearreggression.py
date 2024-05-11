@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from functions import *
 import time
 
@@ -25,6 +26,15 @@ training_time = end_time - start_time
 print(f"Training time of linear regression: {training_time} seconds")
 
 y_predict = X_test.dot(beta)
+
+plt.figure(figsize=(8, 5))  
+plt.scatter(y_test, y_predict, color='lightblue') 
+plt.plot(y_test, y_test, color='purple', linewidth=2) 
+plt.title("Actual vs predicted Prices")  
+plt.xlabel("Actual Price") 
+plt.ylabel("Predicted Price")  
+plt.grid(True)  
+plt.show()
 
 mse_lr = mean_squared_error(y_test, y_predict)
 mae_lr = mean_absolute_error(y_test, y_predict)
