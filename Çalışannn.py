@@ -13,6 +13,7 @@ import pandas as pd
 
 
 data = pd.read_csv('proccessed_airbnb_data.csv')
+
 X = data.drop(["log_price"], axis=1)
 y = data['log_price'].values.reshape(-1, 1)  # Reshape y to make it 2D
 
