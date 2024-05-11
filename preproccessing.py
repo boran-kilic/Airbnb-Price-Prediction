@@ -115,10 +115,10 @@ for column in columns_to_delete_outliers:
 
 ########################## standardization #####################################
 
-# columns_to_standardize = ["log_price","property_type","room_type","amenities",
-#                         "accommodates","bathrooms","bed_type","city","neighbourhood","bedrooms","beds"]
-columns_to_standardize = ["property_type","room_type","amenities",
+columns_to_standardize = ["log_price","property_type","room_type","amenities",
                         "accommodates","bathrooms","bed_type","city","neighbourhood","bedrooms","beds"]
+# columns_to_standardize = ["property_type","room_type","amenities",
+#                         "accommodates","bathrooms","bed_type","city","neighbourhood","bedrooms","beds"]
 
 
 for column in columns_to_standardize:

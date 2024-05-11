@@ -70,7 +70,7 @@ def update_parameters(W1, b1, W2, b2, dW1, db1, dW2, db2, lr):
 
 data = pd.read_csv('proccessed_airbnb_data.csv')
 X = data.drop(["log_price"], axis=1)
-y = data['log_price'].astype(float).values
+y = data['log_price']
 X_train, X_test, y_train, y_test, x_validation, y_validation = train_test_split(X,y,seed = 42, test_size = 0.2, validation_size=0.2)
 
 # X, y = np.random.rand(1000, 10), np.random.rand(1000, 1)  # Replace with real data
