@@ -13,7 +13,6 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,seed = 42, test_size = 0
 X_train = np.column_stack((np.ones(len(x_train)), x_train))
 X_test =  np.column_stack((np.ones(len(x_test)), x_test))
 
-
 X_train_transpose = np.transpose(X_train)
 start_time = time.time()
 beta = np.linalg.inv(X_train_transpose.dot(X_train)).dot(X_train_transpose).dot(y_train)
@@ -24,8 +23,6 @@ print(f"Training time of linear regression: {training_time} seconds")
 
 y_predict = X_test.dot(beta)
 
-# y_predict = np.exp(y_predict)
-# y_test = np.exp(y_test)
 
 plt.figure(figsize=(8, 5))  
 plt.scatter(y_test, y_predict, color='lightblue') 
@@ -35,9 +32,6 @@ plt.xlabel("Actual Price")
 plt.ylabel("Predicted Price")  
 plt.grid(True)  
 plt.show()
-
-# y_predict_dollar = np.exp(y_predict)
-# y_test_dollar = np.exp(y_test)
 
 
 mse_lr = mean_squared_error(y_test, y_predict)
