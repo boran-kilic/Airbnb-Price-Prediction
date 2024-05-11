@@ -24,6 +24,9 @@ print(f"Training time of linear regression: {training_time} seconds")
 
 y_predict = X_test.dot(beta)
 
+# y_predict = np.exp(y_predict)
+# y_test = np.exp(y_test)
+
 plt.figure(figsize=(8, 5))  
 plt.scatter(y_test, y_predict, color='lightblue') 
 plt.plot(y_test, y_test, color='purple', linewidth=2) 
@@ -32,6 +35,10 @@ plt.xlabel("Actual Price")
 plt.ylabel("Predicted Price")  
 plt.grid(True)  
 plt.show()
+
+# y_predict_dollar = np.exp(y_predict)
+# y_test_dollar = np.exp(y_test)
+
 
 mse_lr = mean_squared_error(y_test, y_predict)
 mae_lr = mean_absolute_error(y_test, y_predict)

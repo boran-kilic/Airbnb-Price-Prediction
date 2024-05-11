@@ -18,6 +18,9 @@ print(f"Training time of the decision tree: {training_time} seconds")
 
 y_predict = np.array(predict_tree(tree_model, x_test))
 
+# y_predict = np.exp(y_predict)
+# y_test = np.exp(y_test)
+
 plt.figure(figsize=(8, 5))  
 plt.scatter(y_test, y_predict, color='lightblue') 
 plt.plot(y_test, y_test, color='purple', linewidth=2) 
@@ -26,6 +29,8 @@ plt.xlabel("Actual Price")
 plt.ylabel("Predicted Price")  
 plt.grid(True)  
 plt.show()
+
+
 
 mae = mean_absolute_error(y_test, y_predict)
 mse = mean_squared_error(y_test, y_predict)
