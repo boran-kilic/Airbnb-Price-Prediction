@@ -1,7 +1,5 @@
 import numpy as np
 
-
-
 ##########################common functions#####################################
 def r2_score (y_test, y_predict):
     nominator = 0
