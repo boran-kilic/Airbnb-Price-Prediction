@@ -8,7 +8,7 @@ X = data.drop(["log_price"], axis=1)
 y = data['log_price'].values.reshape(-1, 1)  
 X_train, X_test, y_train, y_test = train_test_split(X, y, seed = 42, test_size=0.2)
 input_dim = X_train.shape[1]
-hidden_dim = 50
+hidden_dim = 20
 output_dim = 1
 
 
@@ -67,7 +67,7 @@ W2, b2 = initialize_weights(hidden_dim, output_dim), initialize_bias(output_dim)
 
 # Training parameters
 epochs = 1000
-learning_rate = 0.01
+learning_rate = 0.5
 
 # Training loop
 for epoch in range(epochs):
