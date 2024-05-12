@@ -19,7 +19,7 @@ W1, b1, W2, b2 = neural_network(X_train,y_train, hidden_dim, output_dim, epochs,
 end_time = time.time()
 training_time = end_time - start_time  
 print('\n')
-print(f"Training time of the decision tree: {training_time} seconds")
+print(f"Training time of the neural network: {training_time} seconds")
 
 y_predict = predict_neural(X_test, W1, b1, W2, b2)
 
@@ -42,3 +42,4 @@ print('\nMean Absolute Error of Neural Network: ', mae)
 print('\nMean Squarred Error of Neural Network: ', mse)
 print('\nRoot Mean Squarred Error of Neural Network: ', rmse)
 print('\nR2 Score of Neural Network: ', r2)
+

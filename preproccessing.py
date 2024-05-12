@@ -115,8 +115,7 @@ for column in columns_to_delete_outliers:
 
 ########################## standardization #####################################
 
-columns_to_standardize = ["log_price","property_type","room_type","amenities",
-                        "accommodates","bathrooms","bed_type","city","neighbourhood","bedrooms","beds"]
+columns_to_standardize = new_data.columns.tolist()
 
 for column in columns_to_standardize:
     col_mean = np.mean(new_data[column])
@@ -129,6 +128,4 @@ plt.figure(figsize = (20,10))
 sns.heatmap(new_data.corr(), annot=True, fmt=".2f", cmap="seismic")
 plt.subplots_adjust(left=0.2, bottom=0.3)
 plt.show()
-
-
 
