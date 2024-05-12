@@ -7,7 +7,7 @@ from functions import *
 data = pd.read_csv('proccessed_airbnb_data.csv')
 
 x = data.drop(["log_price"], axis=1)
-y = data['log_price']
+y = data['log_price'].values.reshape(-1, 1)
 
 x_train, x_test, y_train, y_test, x_validation, y_validation = train_test_split(x,y,seed = 42, test_size = 0.2, validation_size=0.1)
 
