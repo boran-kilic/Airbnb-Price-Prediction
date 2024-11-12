@@ -118,7 +118,7 @@ def relu_grad(x):
     return (x > 0).astype(float)
 
 def initialize_weights(input_dim, output_dim):
-    return np.random.randn(input_dim, output_dim) * np.sqrt(2 / input_dim)
+    return np.random.randn(input_dim, output_dim) 
 
 def initialize_bias(output_dim):
     return np.zeros((1, output_dim))
